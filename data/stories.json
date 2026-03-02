@@ -1,0 +1,21 @@
+{
+  "stories": [
+    {
+      "id": "dupont-1987",
+      "title": "Nightlife & Community in Dupont (1987)",
+      "summary": "A snapshot of queer community-building around Dupont Circle in the late 80s.",
+      "year": 1987,
+      "location": "Dupont Circle, DC",
+      "tags": ["nightlife", "community", "dc"],
+      "heroImage": "../assets/images/party.jpg",
+      "body": "Full story text goes here. This will become your archive narrative/transcript.",
+      "audio": {
+        "src": "./audio/dupont-interview.mp3",
+        "transcript": "Short transcript excerpt here (you can expand later)."
+      },
+      "gallery": [
+        { "src": "../assets/images/dragqueen.png", "alt": "Drag scene near Dupont Circle." }
+      ]
+    }
+  ]
+}
