@@ -75,3 +75,73 @@ body {
     align-items: flex-start;
   }
 }
+
+/* MAIN LAYOUT */
+.main-content {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* HERO SECTION */
+.hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.hero h1 {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  font-size: 18px;
+  opacity: 0.8;
+  margin-bottom: 24px;
+}
+
+.hero button {
+  padding: 10px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background: #7c3aed;
+  color: white;
+  cursor: pointer;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.hero button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ARCHIVE GRID */
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* ARCHIVE CARD */
+.archive-card {
+  background: #141418;
+  padding: 20px;
+  border-radius: 16px;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+  cursor: pointer;
+}
+
+.archive-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.archive-card h3 {
+  margin-top: 0;
+}
+
+.archive-card p {
+  opacity: 0.8;
+  font-size: 14px;
+}
