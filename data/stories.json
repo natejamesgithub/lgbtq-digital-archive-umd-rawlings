@@ -8,10 +8,10 @@
       "location": "Dupont Circle, DC",
       "tags": ["nightlife", "community", "dc"],
       "heroImage": "../assets/images/party.jpg",
-      "body": "Full story text goes here. This will become your archive narrative/transcript.",
+      "body": "Full story text goes here. This will become our archive narrative/transcript.",
       "audio": {
         "src": "./audio/dupont-interview.mp3",
-        "transcript": "Short transcript excerpt here (you can expand later)."
+        "transcript": "Short transcript excerpt here (we can expand later)."
       },
       "gallery": [
         { "src": "../assets/images/dragqueen.png", "alt": "Drag scene near Dupont Circle." }
