@@ -7,21 +7,28 @@ const tagBar = document.getElementById("tagBar");
 let allStories = [];
 let activeTag = null;
 
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, m => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+  }[m]));
+}
+
 function storyCard(s) {
   return `
     <article class="story-card">
       <a href="story.html?id=${encodeURIComponent(s.id)}">
-        <img src="${s.heroImage}" alt="${escapeHtml(s.title)}" />
+        ${s.hero_image_url ? `<img src="${s.hero_image_url}" alt="${escapeHtml(s.title)}" />` : ""}
         <h3>${escapeHtml(s.title)}</h3>
         <p>${escapeHtml(s.summary)}</p>
         <div class="meta">
-          <span>${s.year}</span>
-          <span>${escapeHtml(s.location)}</span>
+          ${s.year ? `<span>${s.year}</span>` : ""}
+          ${s.location ? `<span>${escapeHtml(s.location)}</span>` : ""}
         </div>
       </a>
     </article>
   `;
 }
+
 
 function render(stories) {
   grid.innerHTML = stories.map(storyCard).join("");
@@ -58,10 +65,17 @@ function applyFilters() {
   render(filtered);
 }
 
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, m => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
-  }[m]));
+function applySearch() {
+  const q = (searchInput.value || "").toLowerCase().trim();
+  if (!q) return render(allStories);
+
+  const filtered = allStories.filter(s =>
+    (s.title || "").toLowerCase().includes(q) ||
+    (s.summary || "").toLowerCase().includes(q) ||
+    (s.body || "").toLowerCase().includes(q) ||
+    (s.location || "").toLowerCase().includes(q)
+  );
+  render(filtered);
 }
 
 (async function init() {
@@ -70,6 +84,7 @@ function escapeHtml(str) {
   render(allStories);
 
   searchInput?.addEventListener("input", applyFilters);
+  searchInput?.addEventListener("input", applySearch);
 
   tagBar?.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-tag]");

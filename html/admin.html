@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin • DC LGBTQ Archive</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="nav-inner">
+        <h2 class="brand">DC LGBTQ Archive</h2>
+        <nav class="nav-links">
+          <a href="./index.html">Home</a>
+          <a href="./browse.html">Browse</a>
+        </nav>
+      </div>
+    </div>
+
+    <main class="main-content">
+      <h1>Admin Upload</h1>
+
+      <!-- Optional: Auth login (recommended if you enabled auth-only insert policies) -->
+      <section id="authBox" style="margin-bottom: 16px;">
+        <input id="email" type="email" placeholder="Admin email" />
+        <input id="password" type="password" placeholder="Password" />
+        <button class="btn" id="loginBtn" type="button">Log in</button>
+        <button class="btn" id="logoutBtn" type="button" style="display:none;">Log out</button>
+        <p id="authStatus"></p>
+      </section>
+
+      <form id="storyForm">
+        <input id="title" placeholder="Title" required />
+        <input id="summary" placeholder="Summary" />
+        <input id="year" type="number" placeholder="Year" />
+        <input id="location" placeholder="Location" />
+        <textarea id="body" placeholder="Body / Transcript" rows="7"></textarea>
+
+        <label style="display:block; margin-top: 12px;">Hero image</label>
+        <input id="hero" type="file" accept="image/*" required />
+
+        <label style="display:block; margin-top: 12px;">Gallery images (optional)</label>
+        <input id="gallery" type="file" accept="image/*" multiple />
+
+        <label style="display:block; margin-top: 12px;">Audio (optional)</label>
+        <input id="audio" type="file" accept="audio/*" />
+
+        <label style="display:block; margin-top: 12px;">Audio transcript / caption (optional)</label>
+        <textarea id="audioCaption" rows="4" placeholder="Transcript excerpt or notes"></textarea>
+
+        <button class="btn" type="submit" style="margin-top: 14px;">Publish</button>
+        <p id="status"></p>
+      </form>
+    </main>
+
+    <script type="module" src="../js/admin.js"></script>
+  </body>
+</html>
