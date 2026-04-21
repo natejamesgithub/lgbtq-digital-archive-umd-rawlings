@@ -1,4 +1,14 @@
-const SUPABASE_URL = "https://pvequwqgayemqedtbfzn.supabase.co"; 
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB2ZXF1d3FnYXllbXFlZHRiZnpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NTgwODYsImV4cCI6MjA4ODEzNDA4Nn0.jLVX4hezSdb5mgAx2GdIg5P4n8BnWb5fkhWcyeNmGOM"; 
+import { CONFIG } from "./config.js";
 
-export const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+if (!window.supabase) {
+  throw new Error("Supabase CDN script is missing. Make sure the HTML page loads @supabase/supabase-js.");
+}
+
+if (!CONFIG?.SUPABASE_URL || !CONFIG?.SUPABASE_ANON_KEY) {
+  throw new Error("Missing Supabase config. Copy config.example.js to config.js and fill in your project values.");
+}
+
+export const supabase = window.supabase.createClient(
+  CONFIG.SUPABASE_URL,
+  CONFIG.SUPABASE_ANON_KEY
+);

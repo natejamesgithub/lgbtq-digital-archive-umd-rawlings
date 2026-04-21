@@ -1,40 +1,45 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const archiveData = [
-    {
-      title: "Dupont Circle Oral History",
-      description: "Interview with longtime LGBTQ+ activist in D.C.",
-      type: "Audio",
-    },
-    {
-      title: "Capital Pride 1995",
-      description: "Archival images from early Pride events.",
-      type: "Images",
-    },
-    {
-      title: "AIDS Coalition Records",
-      description: "Community documents from the 1980s.",
-      type: "Text",
-    },
-  ];
+import { getStories } from "./api.js";
 
-  const archiveGrid = document.getElementById("archiveGrid");
+const grid = document.getElementById("archiveGrid");
 
-  archiveData.forEach(item => {
-    const card = document.createElement("div");
-    card.classList.add("archive-card");
+function escapeHtml(str) {
+  return String(str ?? "").replace(/[&<>"']/g, (m) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[m]));
+}
 
-    card.innerHTML = `
-      <h3>${item.title}</h3>
-      <p>${item.description}</p>
-      <small>${item.type}</small>
-    `;
+function storyCard(story) {
+  return `
+    <article class="story-card">
+      <a href="./story.html?id=${encodeURIComponent(story.id)}">
+        ${story.hero_image_url ? `<img src="${story.hero_image_url}" alt="${escapeHtml(story.title)}" />` : ""}
+        <div class="card-content">
+          <h3>${escapeHtml(story.title)}</h3>
+          <p>${escapeHtml(story.summary || "")}</p>
+          <div class="meta">
+            ${story.year ? `<span>${story.year}</span>` : ""}
+            ${story.location ? `<span>${escapeHtml(story.location)}</span>` : ""}
+          </div>
+        </div>
+      </a>
+    </article>
+  `;
+}
 
-    archiveGrid.appendChild(card);
-  });
-
-  // Explore button scroll behavior
-  const exploreBtn = document.getElementById("exploreBtn");
-  exploreBtn.addEventListener("click", () => {
-    archiveGrid.scrollIntoView({ behavior: "smooth" });
-  });
-});
+(async function init() {
+  try {
+    const stories = await getStories(6);
+    if (!stories.length) {
+      grid.innerHTML = `<p class="empty-state">No stories have been published yet.</p>`;
+      return;
+    }
+    grid.innerHTML = stories.map(storyCard).join("");
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = `<p class="empty-state">Could not load stories. Check Supabase configuration and published rows.</p>`;
+  }
+})();

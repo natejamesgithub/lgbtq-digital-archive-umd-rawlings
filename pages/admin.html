@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin • D.C. LGBTQ+ Digital Archive</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <h1 class="brand">D.C. LGBTQ+ Digital Archive</h1>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="./index.html">Home</a>
+          <a href="./browse.html">Browse</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content admin-page">
+      <section class="hero hero-compact">
+        <p class="eyebrow">Admin upload</p>
+        <h2>Publish a new archive story</h2>
+        <p>This page is designed for non-technical team members. Fill in the form, upload files, and publish.</p>
+      </section>
+
+      <section id="authBox" class="panel auth-panel">
+        <h3>Admin sign-in</h3>
+        <div class="form-grid two-col">
+          <label>
+            <span>Email</span>
+            <input id="email" type="email" placeholder="Admin email" />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="password" type="password" placeholder="Password" />
+          </label>
+        </div>
+        <div class="button-row">
+          <button class="btn btn-primary" id="loginBtn" type="button">Log in</button>
+          <button class="btn btn-secondary" id="logoutBtn" type="button" style="display:none;">Log out</button>
+        </div>
+        <p id="authStatus" class="status-text"></p>
+      </section>
+
+      <form id="storyForm" class="panel story-form">
+        <div class="form-grid two-col">
+          <label>
+            <span>Title *</span>
+            <input id="title" placeholder="Title" required />
+          </label>
+          <label>
+            <span>Year</span>
+            <input id="year" type="number" placeholder="1987" min="1800" max="2100" />
+          </label>
+        </div>
+
+        <label>
+          <span>Summary</span>
+          <input id="summary" placeholder="Short summary" />
+        </label>
+
+        <div class="form-grid two-col">
+          <label>
+            <span>Location</span>
+            <input id="location" placeholder="Dupont Circle, DC" />
+          </label>
+          <label>
+            <span>Tags</span>
+            <input id="tags" placeholder="community, nightlife, oral history" />
+          </label>
+        </div>
+
+        <label>
+          <span>Body / transcript</span>
+          <textarea id="body" rows="8" placeholder="Main story text"></textarea>
+        </label>
+
+        <div class="form-grid two-col">
+          <label>
+            <span>Hero image *</span>
+            <input id="hero" type="file" accept="image/*" required />
+          </label>
+          <label>
+            <span>Gallery images</span>
+            <input id="gallery" type="file" accept="image/*" multiple />
+          </label>
+        </div>
+
+        <div class="form-grid two-col">
+          <label>
+            <span>Audio file</span>
+            <input id="audio" type="file" accept="audio/*" />
+          </label>
+          <label>
+            <span>Audio transcript / caption</span>
+            <textarea id="audioCaption" rows="4" placeholder="Transcript excerpt or notes"></textarea>
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-primary" type="submit">Publish story</button>
+        </div>
+        <p id="status" class="status-text"></p>
+      </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="../js/admin.js"></script>
+  </body>
+</html>

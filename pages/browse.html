@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse • D.C. LGBTQ+ Digital Archive</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <h1 class="brand">D.C. LGBTQ+ Digital Archive</h1>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="./index.html">Home</a>
+          <a href="./about.html">About</a>
+          <a href="./contribute.html">Contribute</a>
+          <a href="./admin.html">Admin</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="hero hero-compact">
+        <p class="eyebrow">Browse the archive</p>
+        <h2>Search and filter stories from across the D.C. metro area</h2>
+      </section>
+
+      <section class="filters-panel">
+        <label class="sr-only" for="search">Search stories</label>
+        <input id="search" type="text" placeholder="Search titles, summaries, locations, and story text..." />
+        <div id="tagBar" class="tag-bar"></div>
+      </section>
+
+      <section id="storyGrid" class="story-grid" aria-live="polite"></section>
+      <p id="emptyState" class="empty-state" hidden>No stories matched your search.</p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="../js/browse.js"></script>
+  </body>
+</html>

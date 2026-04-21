@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>D.C. LGBTQ+ Digital Archive</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="nav-inner">
+        <h1 class="brand">D.C. LGBTQ+ Digital Archive</h1>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="./browse.html">Browse</a>
+          <a href="./about.html">About</a>
+          <a href="./contribute.html">Contribute</a>
+          <a href="./admin.html">Admin</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="hero">
+        <p class="eyebrow">Community memory, preserved with care</p>
+        <h2>Preserving LGBTQ+ stories of the D.C. metropolitan area</h2>
+        <p>
+          Explore oral histories, archival images, and community narratives from across
+          Washington, D.C., Maryland, and Northern Virginia.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="./browse.html">Explore archive</a>
+          <a class="btn btn-secondary" href="./contribute.html">Contribute a story</a>
+        </div>
+      </section>
+
+      <section class="section-header">
+        <div>
+          <p class="section-kicker">Latest additions</p>
+          <h3>Recently published stories</h3>
+        </div>
+        <a class="text-link" href="./browse.html">View all stories</a>
+      </section>
+
+      <section id="archiveGrid" class="archive-grid" aria-live="polite"></section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="../js/script.js"></script>
+  </body>
+</html>

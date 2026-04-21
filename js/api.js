@@ -1,20 +1,24 @@
-/*export async function getStories() {
-  const res = await fetch("../data/stories.json");
-  if (!res.ok) throw new Error("Could not load stories.json");
-  const data = await res.json();
-  return data.stories ?? [];
-}*/
-
 import { supabase } from "./supabaseClient.js";
 
-export async function getStories() {
-  const { data, error } = await supabase
+function normalizeStory(story) {
+  return {
+    ...story,
+    tags: Array.isArray(story.tags) ? story.tags : []
+  };
+}
+
+export async function getStories(limit = null) {
+  let query = supabase
     .from("stories")
     .select("*")
     .order("created_at", { ascending: false });
 
+  if (limit) query = query.limit(limit);
+
+  const { data, error } = await query;
   if (error) throw error;
-  return data ?? [];
+
+  return (data ?? []).map(normalizeStory);
 }
 
 export async function getStoryBundleById(storyId) {
@@ -34,5 +38,8 @@ export async function getStoryBundleById(storyId) {
 
   if (mediaErr) throw mediaErr;
 
-  return { story, media: media ?? [] };
+  return {
+    story: normalizeStory(story),
+    media: media ?? []
+  };
 }
