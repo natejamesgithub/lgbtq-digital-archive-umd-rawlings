@@ -17,92 +17,50 @@
       </div>
     </header>
 
-    <main class="main-content admin-page">
-      <section class="hero hero-compact">
-        <p class="eyebrow">Admin upload</p>
-        <h2>Publish a new archive story</h2>
-        <p>This page is designed for non-technical team members. Fill in the form, upload files, and publish.</p>
+    <main class="main-content">
+      <h1>Admin Upload</h1>
+
+      <section id="authBox" style="margin-bottom: 16px;">
+        <h2>Admin Login</h2>
+        <p id="authHelp">Log in to upload stories, media, and oral histories.</p>
+
+        <input id="email" type="email" placeholder="Admin email" />
+        <input id="password" type="password" placeholder="Password" />
+
+        <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn" id="loginBtn" type="button">Log in</button>
+          <button class="btn" id="logoutBtn" type="button" style="display:none;">Log out</button>
+        </div>
+
+        <p id="authStatus"></p>
       </section>
 
-      <section id="authBox" class="panel auth-panel">
-        <h3>Admin sign-in</h3>
-        <div class="form-grid two-col">
-          <label>
-            <span>Email</span>
-            <input id="email" type="email" placeholder="Admin email" />
-          </label>
-          <label>
-            <span>Password</span>
-            <input id="password" type="password" placeholder="Password" />
-          </label>
-        </div>
-        <div class="button-row">
-          <button class="btn btn-primary" id="loginBtn" type="button">Log in</button>
-          <button class="btn btn-secondary" id="logoutBtn" type="button" style="display:none;">Log out</button>
-        </div>
-        <p id="authStatus" class="status-text"></p>
+      <section id="uploadGate" hidden>
+        <h2>Upload Archive Entry</h2>
+
+        <form id="storyForm">
+          <input id="title" placeholder="Title" required />
+          <input id="summary" placeholder="Summary" />
+          <input id="year" type="number" placeholder="Year" />
+          <input id="location" placeholder="Location" />
+          <textarea id="body" placeholder="Body / Transcript" rows="7"></textarea>
+
+          <label style="display:block; margin-top: 12px;">Hero image</label>
+          <input id="hero" type="file" accept="image/*" required />
+
+          <label style="display:block; margin-top: 12px;">Gallery images (optional)</label>
+          <input id="gallery" type="file" accept="image/*" multiple />
+
+          <label style="display:block; margin-top: 12px;">Audio (optional)</label>
+          <input id="audio" type="file" accept="audio/*" />
+
+          <label style="display:block; margin-top: 12px;">Audio transcript / caption (optional)</label>
+          <textarea id="audioCaption" rows="4" placeholder="Transcript excerpt or notes"></textarea>
+
+          <button class="btn" type="submit" style="margin-top: 14px;">Publish</button>
+          <p id="status"></p>
+        </form>
       </section>
-
-      <form id="storyForm" class="panel story-form">
-        <div class="form-grid two-col">
-          <label>
-            <span>Title *</span>
-            <input id="title" placeholder="Title" required />
-          </label>
-          <label>
-            <span>Year</span>
-            <input id="year" type="number" placeholder="1987" min="1800" max="2100" />
-          </label>
-        </div>
-
-        <label>
-          <span>Summary</span>
-          <input id="summary" placeholder="Short summary" />
-        </label>
-
-        <div class="form-grid two-col">
-          <label>
-            <span>Location</span>
-            <input id="location" placeholder="Dupont Circle, DC" />
-          </label>
-          <label>
-            <span>Tags</span>
-            <input id="tags" placeholder="community, nightlife, oral history" />
-          </label>
-        </div>
-
-        <label>
-          <span>Body / transcript</span>
-          <textarea id="body" rows="8" placeholder="Main story text"></textarea>
-        </label>
-
-        <div class="form-grid two-col">
-          <label>
-            <span>Hero image *</span>
-            <input id="hero" type="file" accept="image/*" required />
-          </label>
-          <label>
-            <span>Gallery images</span>
-            <input id="gallery" type="file" accept="image/*" multiple />
-          </label>
-        </div>
-
-        <div class="form-grid two-col">
-          <label>
-            <span>Audio file</span>
-            <input id="audio" type="file" accept="audio/*" />
-          </label>
-          <label>
-            <span>Audio transcript / caption</span>
-            <textarea id="audioCaption" rows="4" placeholder="Transcript excerpt or notes"></textarea>
-          </label>
-        </div>
-
-        <div class="button-row">
-          <button class="btn btn-primary" type="submit">Publish story</button>
-        </div>
-        <p id="status" class="status-text"></p>
-      </form>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

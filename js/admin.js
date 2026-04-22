@@ -1,37 +1,51 @@
+console.log("admin.js loaded");
+
 import { supabase } from "./supabaseClient.js";
+console.log("supabase client loaded:", supabase);
 
 const form = document.getElementById("storyForm");
+const uploadGate = document.getElementById("uploadGate");
 const statusEl = document.getElementById("status");
+
 const authStatus = document.getElementById("authStatus");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-function setStatus(message) {
-  statusEl.textContent = message;
+function setStatus(msg) {
+  if (statusEl) statusEl.textContent = msg;
 }
 
-function setAuthStatus(message) {
-  authStatus.textContent = message;
+function setAuthStatus(msg) {
+  authStatus.textContent = msg;
 }
 
-function parseTags(rawValue) {
-  return String(rawValue || "")
-    .split(",")
-    .map((tag) => tag.trim().toLowerCase())
-    .filter(Boolean);
+async function getSession() {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) throw error;
+  return data.session;
 }
 
 async function refreshAuthUI() {
-  const { data } = await supabase.auth.getSession();
-  const signedIn = !!data.session;
-  loginBtn.style.display = signedIn ? "none" : "inline-flex";
-  logoutBtn.style.display = signedIn ? "inline-flex" : "none";
-  setAuthStatus(signedIn ? "Signed in." : "Not signed in.");
+  const session = await getSession();
+  const signedIn = !!session;
+
+  loginBtn.style.display = signedIn ? "none" : "inline-block";
+  logoutBtn.style.display = signedIn ? "inline-block" : "none";
+  uploadGate.hidden = !signedIn;
+
+  setAuthStatus(signedIn
+    ? `Signed in as ${session.user.email}`
+    : "Not signed in. Please log in to upload.");
 }
 
 loginBtn?.addEventListener("click", async () => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
+
+  if (!email || !password) {
+    setAuthStatus("Please enter both email and password.");
+    return;
+  }
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
@@ -40,54 +54,64 @@ loginBtn?.addEventListener("click", async () => {
   }
 
   setAuthStatus("Logged in.");
-  refreshAuthUI();
+  await refreshAuthUI();
 });
 
 logoutBtn?.addEventListener("click", async () => {
   await supabase.auth.signOut();
-  refreshAuthUI();
+  setStatus("");
+  await refreshAuthUI();
+});
+
+supabase.auth.onAuthStateChange(async () => {
+  await refreshAuthUI();
 });
 
 refreshAuthUI();
 
 async function uploadToSupabaseStorage(bucket, file) {
   const ext = file.name.split(".").pop();
-  const safeName = `${crypto.randomUUID()}.${ext}`;
-  const path = safeName;
+  const fileName = `${crypto.randomUUID()}.${ext}`;
+  const path = fileName;
 
   const { error } = await supabase.storage.from(bucket).upload(path, file, {
     cacheControl: "3600",
     upsert: false
   });
+
   if (error) throw error;
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
 }
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault();
+form?.addEventListener("submit", async (e) => {
+  e.preventDefault();
   setStatus("Uploading...");
 
   try {
+    const session = await getSession();
+    if (!session) {
+      throw new Error("You must be logged in before uploading.");
+    }
+
     const title = document.getElementById("title").value.trim();
     const summary = document.getElementById("summary").value.trim() || null;
     const year = Number(document.getElementById("year").value) || null;
     const location = document.getElementById("location").value.trim() || null;
-    const body = document.getElementById("body").value.trim() || null;
-    const tags = parseTags(document.getElementById("tags").value);
+    const body = document.getElementById("body").value || null;
 
     const heroFile = document.getElementById("hero").files[0];
     const galleryFiles = Array.from(document.getElementById("gallery").files || []);
     const audioFile = document.getElementById("audio").files[0];
-    const audioCaption = document.getElementById("audioCaption").value.trim() || null;
+    const audioCaption = document.getElementById("audioCaption").value || null;
 
     if (!title) throw new Error("Title is required.");
     if (!heroFile) throw new Error("Hero image is required.");
 
     const heroUrl = await uploadToSupabaseStorage("images", heroFile);
 
-    const { data: story, error: storyError } = await supabase
+    const { data: story, error: storyErr } = await supabase
       .from("stories")
       .insert([{
         title,
@@ -95,30 +119,32 @@ form.addEventListener("submit", async (event) => {
         year,
         location,
         body,
-        tags,
         hero_image_url: heroUrl
       }])
       .select()
       .single();
 
-    if (storyError) throw storyError;
+    if (storyErr) throw storyErr;
 
     let order = 0;
-    for (const imageFile of galleryFiles) {
-      const imageUrl = await uploadToSupabaseStorage("images", imageFile);
+    for (const img of galleryFiles) {
+      const url = await uploadToSupabaseStorage("images", img);
+
       const { error } = await supabase.from("media").insert([{
         story_id: story.id,
         type: "image",
-        url: imageUrl,
-        alt_text: imageFile.name,
+        url,
+        alt_text: img.name,
         caption: null,
         sort_order: order++
       }]);
+
       if (error) throw error;
     }
 
     if (audioFile) {
       const audioUrl = await uploadToSupabaseStorage("audio", audioFile);
+
       const { error } = await supabase.from("media").insert([{
         story_id: story.id,
         type: "audio",
@@ -127,14 +153,13 @@ form.addEventListener("submit", async (event) => {
         caption: audioCaption,
         sort_order: 0
       }]);
+
       if (error) throw error;
     }
 
-    setStatus("Published. Redirecting...");
-    form.reset();
+    setStatus("Published! Redirecting...");
     window.location.href = `./story.html?id=${encodeURIComponent(story.id)}`;
   } catch (err) {
-    console.error(err);
     setStatus(`Error: ${err.message || err}`);
   }
 });
