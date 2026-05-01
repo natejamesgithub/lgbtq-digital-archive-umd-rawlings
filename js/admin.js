@@ -10,6 +10,10 @@ const statusEl = document.getElementById("status");
 const authStatus = document.getElementById("authStatus");
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+const authBox = document.getElementById("authBox");
+const loginFields = document.getElementById("loginFields");
+const userBar = document.getElementById("userBar");
+const userEmail = document.getElementById("userEmail");
 
 function setStatus(msg) {
   if (statusEl) statusEl.textContent = msg;
@@ -29,13 +33,24 @@ async function refreshAuthUI() {
   const session = await getSession();
   const signedIn = !!session;
 
-  loginBtn.style.display = signedIn ? "none" : "inline-block";
-  logoutBtn.style.display = signedIn ? "inline-block" : "none";
-  uploadGate.hidden = !signedIn;
+  uploadGate.hidden = !signedIn; 
 
-  setAuthStatus(signedIn
-    ? `Signed in as ${session.user.email}`
-    : "Not signed in. Please log in to upload.");
+  if (signedIn) {
+    loginFields.style.display = "none";
+
+    userBar.style.display = "flex"; 
+    userBar.style.alignItems = "center"; 
+    userBar.style.gap = "10px"; 
+
+    userEmail.textContent = session.user.email;
+    setAuthStatus("");
+  } else {
+    // show login inputs
+    loginFields.style.display = "block";
+    // hide logout bar
+    userBar.style.display = "none";
+    setAuthStatus("Not signed in. Please log in to upload.");
+  }
 }
 
 loginBtn?.addEventListener("click", async () => {
@@ -63,9 +78,9 @@ logoutBtn?.addEventListener("click", async () => {
   await refreshAuthUI();
 });
 
-supabase.auth.onAuthStateChange(async () => {
-  await refreshAuthUI();
-});
+//supabase.auth.onAuthStateChange(async () => {
+//  await refreshAuthUI();
+//});
 
 refreshAuthUI();
 
