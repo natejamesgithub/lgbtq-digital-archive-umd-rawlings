@@ -627,3 +627,156 @@ small,
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Mobile Responsive Upgrade ===== */
+
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .main-content {
+    margin: 32px auto;
+    padding: 0 16px;
+  }
+
+  .nav-inner {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand {
+    font-size: 16px;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nav-links a {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .hero {
+    margin-bottom: 36px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .hero button,
+  .btn,
+  button {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  #archiveGrid,
+  .archive-grid,
+  #storyGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .archive-card,
+  .story-card {
+    border-radius: 14px;
+  }
+
+  .story-card img {
+    height: 190px;
+  }
+
+  #search {
+    max-width: 100%;
+    min-height: 44px;
+    font-size: 15px;
+  }
+
+  #tagBar {
+    gap: 8px;
+  }
+
+  .tag {
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+
+  #hero {
+    max-height: 280px;
+    border-radius: 14px;
+  }
+
+  #gallery {
+    grid-template-columns: 1fr;
+  }
+
+  #gallery img {
+    height: 220px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    min-height: 44px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 15px;
+  }
+
+  textarea {
+    min-height: 120px;
+  }
+
+  #authBox {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #storyForm {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-links a {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .story-card img {
+    height: 170px;
+  }
+
+  #gallery img {
+    height: 190px;
+  }
+}
